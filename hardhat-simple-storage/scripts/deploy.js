@@ -12,21 +12,21 @@ async function main() {
     console.log(`Contract Address: ${SimpleStorage.address}`)
 
     if (network.config.chainid == 420 && process.env.ETHERSCAN_API_KEY) {
-        console.log(`Waiting for BLock Confirmations...`);
-        await SimpleStorage.deployTransaction.wait( 6 )
+        console.log(`Waiting for BLock Confirmations...`)
+        await SimpleStorage.deployTransaction.wait(6)
         await verify(SimpleStorage.address, [])
     }
 
     //Retrieve StoredNumber
-    const currentNumber = await SimpleStorage.retrieve();
-    console.log(`Current Number: ${currentNumber}`);
-    
+    const currentNumber = await SimpleStorage.retrieve()
+    console.log(`Current Number: ${currentNumber}`)
+
     //Updating Current Number
-    const transactionResponse = await SimpleStorage.store( 79 )
-    await transactionResponse.wait( 1 )
-    
-    const updatedValue = await SimpleStorage.retrieve();
-    console.log(`Updated Value: ${updatedValue}`);
+    const transactionResponse = await SimpleStorage.store(79)
+    await transactionResponse.wait(1)
+
+    const updatedValue = await SimpleStorage.retrieve()
+    console.log(`Updated Value: ${updatedValue}`)
 }
 
 async function verify(contractAddress, args) {
@@ -37,7 +37,7 @@ async function verify(contractAddress, args) {
             constructorArguments: args,
         })
     } catch (error) {
-        if ( error.message.toLowerCase().includes( "already verified" ) ) {
+        if (error.message.toLowerCase().includes("already verified")) {
             console.log(`Already Verified!`)
         } else {
             console.log(`Error: ${error}`)
