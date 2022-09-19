@@ -21,6 +21,7 @@ module.exports = {
             chainid: 420,
         },
         localhost: {
+            //use hardhat node
             url: "http://127.0.0.1:8545/",
             //accounts : Thanks HardHat!,
             chainid: 31337,
