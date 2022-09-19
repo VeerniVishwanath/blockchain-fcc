@@ -13,9 +13,12 @@ contract FundMe {
 
     error notOwner();
 
+    AggregatorV3Interface priceFeed;
+
     //constructor
-    constructor() {
+    constructor(address priceFeedAddress) {
         i_owner = msg.sender;
+        priceFeed = AggregatorV3Interface(priceFeedAddress);
     }
 
     //List of Funders with amount
@@ -24,7 +27,7 @@ contract FundMe {
 
     function fund() public payable {
         require(
-            msg.value.getConversionRate() >= MINIMUM_USD,
+            msg.value.getConversionRate(priceFeed) >= MINIMUM_USD,
             "Didn't send enough"
         );
         funders.push(msg.sender);
