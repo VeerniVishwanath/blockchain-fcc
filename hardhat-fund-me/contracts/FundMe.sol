@@ -1,19 +1,41 @@
 //SPDX-License-Identifier: MIT
+//Pragma
 pragma solidity ^0.8.8;
-
+/** Imports */
+import "@chainlink/contracts/src/v0.6/tests/MockV3Aggregator.sol";
 import "./PriceConverter.sol";
+/** Error Codes  */
+error FundMe__NotOwner();
 
+/** Interfaces, libraries & Contracts */
+
+/** @title A contract for crowd funding
+ *  @author Vishwanath Veerni
+ *  @notice This contract is to demo a sample funding contract
+ *  @dev This implements price feeds as our library 
+ */
 contract FundMe {
+    /** Type Declarations */
     using PriceConverter for uint256;
 
+    /** State Variables */
+    address public immutable i_owner;
     //Making Constant for Gas Optimizations
     uint256 public constant MINIMUM_USD = 50 * 1e18;
+    //List of Funders with amount
+    address[] public funders;
+    mapping(address => uint256) public addressToAmountFunders;
+    AggregatorV3Interface public priceFeed;
 
-    address public immutable i_owner;
 
-    error notOwner();
+    /** Modifiers */
+    modifier onlyi_owner() {
+        // require(i_owner ==  msg.sender, "You ain't the i_owner");
+        if (i_owner != msg.sender) revert FundMe__NotOwner();
+        _;
+    }
 
-    AggregatorV3Interface priceFeed;
+    /** Functions */
 
     //constructor
     constructor(address priceFeedAddress) {
@@ -21,10 +43,14 @@ contract FundMe {
         priceFeed = AggregatorV3Interface(priceFeedAddress);
     }
 
-    //List of Funders with amount
-    address[] public funders;
-    mapping(address => uint256) public addressToAmountFunders;
-
+    // Recieve and Fallback
+    recieve() external payable{
+        fund();
+    }
+    fallback() external payable{
+        fund();
+    }
+    
     function fund() public payable {
         require(
             msg.value.getConversionRate(priceFeed) >= MINIMUM_USD,
@@ -49,11 +75,5 @@ contract FundMe {
             value: address(this).balance
         }("");
         require(callSuccess, "Call Failed");
-    }
-
-    modifier onlyi_owner() {
-        // require(i_owner ==  msg.sender, "You ain't the i_owner");
-        if (i_owner != msg.sender) revert notOwner();
-        _;
     }
 }
