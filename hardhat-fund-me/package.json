@@ -27,5 +27,13 @@
     "solidity-coverage": "^0.8.0",
     "typechain": "^8.1.0"
   },
-  "description": "A funding project made with Hardhat"
+  "description": "A funding project made with Hardhat",
+  "scripts": {
+    "test": "yarn hardhat test",
+    "test:staging" : "yarn hardhat test --network goerli",
+    "lint" : "yarn solhint 'contracts/*.sol'",
+    "lint:fix" : "yarn solhint 'contracts/*.sol' --fix",
+    "format" : "yarn prettier --write .",
+    "coverage" : "yarn hardhat coverage"
+  }
 }
