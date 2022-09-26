@@ -19,7 +19,7 @@ module.exports = {
             url: GOERLI_RCP_URL,
             accounts: [GOERLI_PRIVATE_KEY],
             chainid: 420,
-            blockConfirmations:6
+            blockConfirmations: 6,
         },
         localhost: {
             //use hardhat node
@@ -36,7 +36,7 @@ module.exports = {
         compilers: [{ version: "0.8.8" }, { version: "0.6.6" }],
     },
     gasReporter: {
-        enabled: false,
+        enabled: true,
         outputFile: "gas-reporter.txt",
         noColors: true,
         currency: "USD",
