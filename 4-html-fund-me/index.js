@@ -21,7 +21,7 @@ async function connect() {
 }
 
 async function fund() {
-    const ethAmount = "77"
+    const ethAmount = document.getElementById("EthAmount").value
     console.log(`Funding with ${ethAmount}..`)
     if (typeof window.ethereum !== "undefined") {
         //provider / connection to blockchain
@@ -55,4 +55,3 @@ function listenForTransactionMine(txResponse, provider) {
         })
     })
 }
-
