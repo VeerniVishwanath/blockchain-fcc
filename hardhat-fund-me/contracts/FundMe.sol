@@ -4,6 +4,8 @@ pragma solidity ^0.8.0;
 /** Imports */
 import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 import "./PriceConverter.sol";
+import "hardhat/console.sol";
+
 /** Error Codes  */
 error FundMe__NotOwner();
 
@@ -43,12 +45,17 @@ contract FundMe {
     }
 
     // Recieve and Fallback
-    // receive() external payable{
-    //     fund();
-    // }
-    // fallback() external payable{
-    //     fund();
-    // }
+    receive() external payable {
+        console.log("Recieve : ", msg.value);
+        fund();
+    }
+
+    fallback() external payable {
+        console.log("Fallback : ", msg.value);
+        if (msg.value > 100) {
+            fund();
+        }
+    }
 
     function fund() public payable {
         require(
@@ -93,22 +100,26 @@ contract FundMe {
         }("");
         require(callSuccess, "Call Failed");
     }
-    
+
     /**View and Pure */
     //Getter functions for private state variables
     function getOwner() public view returns (address) {
         return i_owner;
     }
 
-    function getFunder(uint256 index) public view returns (address){
+    function getFunder(uint256 index) public view returns (address) {
         return s_funders[index];
     }
 
-    function getAddressToAmountFunded(address funder) public view returns(uint256){
+    function getAddressToAmountFunded(address funder)
+        public
+        view
+        returns (uint256)
+    {
         return s_addressToAmountFunders[funder];
     }
 
-    function getPriceFeed() public view returns(AggregatorV3Interface){
+    function getPriceFeed() public view returns (AggregatorV3Interface) {
         return s_priceFeed;
     }
 }
