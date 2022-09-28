@@ -3,9 +3,11 @@ import { contractAddress, abi } from "./constants.js"
 
 const connectButton = document.getElementById("connectButton")
 const fundButton = document.getElementById("fundButton")
+const balanceButton = document.getElementById("balanceButton")
 
 connectButton.onclick = connect
 fundButton.onclick = fund
+balanceButton.onclick = getBalance
 
 async function connect() {
     if (typeof window.ethereum !== "undefined") {
@@ -20,10 +22,19 @@ async function connect() {
     }
 }
 
+async function getBalance() {
+    if (typeof window.ethereum !== "undefined") {
+        const provider = new ethers.providers.Web3Provider(window.ethereum)
+        const balance = await provider.getBalance(contractAddress)
+        console.log(ethers.utils.formatEther(balance))
+        balanceButton.innerHTML = ethers.utils.formatEther(balance)
+    }
+}
+
 async function fund() {
     const ethAmount = document.getElementById("EthAmount").value
-    console.log(`Funding with ${ethAmount}..`)
-    if (typeof window.ethereum !== "undefined") {
+    if (typeof window.ethereum !== "undefined" && ethAmount != "") {
+        console.log(`Funding with ${ethAmount}..`)
         //provider / connection to blockchain
         const provider = new ethers.providers.Web3Provider(window.ethereum)
         //signer / wallet / someone with gas
