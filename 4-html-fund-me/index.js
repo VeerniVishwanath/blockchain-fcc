@@ -71,7 +71,13 @@ async function withdraw() {
             await listenForTransactionMine(txResponse, provider)
             console.log(`Done!!!`)
         } catch (error) {
-            console.log(error)
+            if (error.toString().includes("NotOwner")) {
+                console.log(
+                    "You ain't the owner .. login with the admin account to withdraw funds"
+                )
+            } else {
+                console.log(error)
+            }
         }
     }
 }
