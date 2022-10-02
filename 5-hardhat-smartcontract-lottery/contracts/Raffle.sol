@@ -14,6 +14,7 @@ import "@chainlink/contracts/src/v0.8/interfaces/VRFCoordinatorV2Interface.sol";
 
 /* Error codes */
 error Raffle__NotEnoughETHEntered();
+error Raffle__TransferFailed();
 
 contract Raffle is VRFConsumerBaseV2 {
     /* State Variables */
@@ -25,6 +26,9 @@ contract Raffle is VRFConsumerBaseV2 {
     uint32 private immutable i_callbackGasLimit;
     uint16 private constant REQUEST_CONFIRMATIONS = 3;
     uint32 private constant NUMWORDS = 1;
+
+    /* Lottery Variables */
+    address payable private s_recentWinner;
 
     /* Events */
     event RaffleEnter(address indexed player);
@@ -70,10 +74,18 @@ contract Raffle is VRFConsumerBaseV2 {
         emit RequestedRaffleWinner(requestId);
     }
 
-    function fulfillRandomWords(uint256 requestId, uint256[] memory randomWords)
-        internal
-        override
-    {}
+    function fulfillRandomWords(
+        uint256, /*requestId */
+        uint256[] memory randomWords
+    ) internal override {
+        uint256 indexOfWinner = randomWords[0] % s_players.length;
+        s_recentWinner = s_players[indexOfWinner];
+        (bool success, ) = s_recentWinner.call{value: address(this).balance}("");
+        //require(success)
+        if (!success) {
+            revert Raffle__TransferFailed();
+        }
+    }
 
     /* View and Pure functions */
     function getEntranceFee() public view returns (uint256) {
