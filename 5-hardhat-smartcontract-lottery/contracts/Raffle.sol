@@ -19,6 +19,12 @@ error Raffle__TransferFailed();
 error Raffle__NotOpen();
 error Raffle__UpkeepNotNeeded(uint256 currentBalance, uint256 numPlayers, uint256 raffleState);
 
+/**@title A Sample Raffle contract
+ * @author Vishwanath Veerni
+ * @notice This contract is for creating an untamperable decentralized smart contract
+ * @dev This implements Chainlink VRF V2 and Chainlink keepers
+ 
+ */
 contract Raffle is VRFConsumerBaseV2, KeeperCompatibleInterface {
     /* Types */
     enum RaffleState {
@@ -157,5 +163,25 @@ contract Raffle is VRFConsumerBaseV2, KeeperCompatibleInterface {
 
     function getPlayer(uint256 index) public view returns (address) {
         return s_players[index];
+    }
+
+    function getRaffleState() public view returns (RaffleState) {
+        return s_raffleState;
+    }
+
+    function getNumWords() public pure returns (uint256) {
+        return NUMWORDS;
+    }
+
+    function getNumberOfPlayers() public view returns (uint256) {
+        return s_players.length;
+    }
+
+    function getLatestTimeStamp() public view returns (uint256) {
+        return s_lastTimePassed;
+    }
+
+    function getRequestConfirmations() public pure returns (uint256){
+        return REQUEST_CONFIRMATIONS;
     }
 }
