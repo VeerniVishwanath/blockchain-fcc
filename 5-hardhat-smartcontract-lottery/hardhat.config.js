@@ -19,7 +19,7 @@ module.exports = {
             blockConfirmations: 1,
         },
         goerli: {
-            chainId: 420,
+            chainId: 5,
             blockConfirmations: 6,
             url: GORELI_RPC_URL,
             accounts: [PRIVATE_KEY],
@@ -34,6 +34,22 @@ module.exports = {
         },
         player: {
             default: 1,
+        },
+    },
+    gasReporter: {
+        enabled: false,
+        currency: "USD",
+        outputFile: "gas-report.txt",
+        noColors: true,
+        // coinmarketcap: process.env.COINMARKETCAP_API_KEY,
+    },
+    mocha: {
+        timeout: 500000, // 500 seconds max for running tests
+    },
+    etherscan: {
+        // yarn hardhat verify --network <NETWORK> <CONTRACT_ADDRESS> <CONSTRUCTOR_PARAMETERS>
+        apiKey: {
+            goerli: ETHERSCAN_API_KEY,
         },
     },
 }
