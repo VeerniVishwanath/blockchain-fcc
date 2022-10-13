@@ -41,6 +41,7 @@ contract Raffle is VRFConsumerBaseV2, KeeperCompatibleInterface {
     uint32 private immutable i_callbackGasLimit;
     uint16 private constant REQUEST_CONFIRMATIONS = 3;
     uint32 private constant NUMWORDS = 1;
+    uint256 private s_randomWords;
 
     /* Lottery Variables */
     address payable private s_recentWinner;
@@ -51,6 +52,7 @@ contract Raffle is VRFConsumerBaseV2, KeeperCompatibleInterface {
     /* Events */
     event RaffleEnter(address indexed player);
     event RequestedRaffleWinner(uint256 indexed requestId);
+    event WinnerPicked(address indexed player);
 
     /* Constructor */
     constructor(
@@ -144,7 +146,9 @@ contract Raffle is VRFConsumerBaseV2, KeeperCompatibleInterface {
         uint256, /*requestId */
         uint256[] memory randomWords
     ) internal override {
+        s_randomWords = randomWords[0];
         uint256 indexOfWinner = randomWords[0] % s_players.length;
+        //address payable recentWinner = s_players[indexOfWinner];
         s_recentWinner = s_players[indexOfWinner];
         s_players = new address payable[](0);
         s_lastTimePassed = block.timestamp;
@@ -154,6 +158,7 @@ contract Raffle is VRFConsumerBaseV2, KeeperCompatibleInterface {
             revert Raffle__TransferFailed();
         }
         s_raffleState = RaffleState.OPEN;
+        emit WinnerPicked(s_recentWinner);
     }
 
     /* View and Pure functions */
@@ -187,5 +192,13 @@ contract Raffle is VRFConsumerBaseV2, KeeperCompatibleInterface {
 
     function getInterval() public view returns (uint256) {
         return i_interval;
+    }
+
+    function getRecentWinner() public view returns (address) {
+        return s_recentWinner;
+    }
+
+    function getRandomWords() public view returns (uint256) {
+        return s_randomWords;
     }
 }
