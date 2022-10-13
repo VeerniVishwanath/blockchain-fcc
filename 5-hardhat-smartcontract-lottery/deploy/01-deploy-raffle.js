@@ -2,12 +2,13 @@ const { network, ethers } = require("hardhat")
 const { developmentChains, networkConfig } = require("../helper-hardhat-config")
 const { verify } = require("../utils/verify")
 
+const VRF_SUB_FUND_AMOUNT = ethers.utils.parseEther("2") //30 is overkill, 2 will do
+
 module.exports = async ({ deployments, getNamedAccounts }) => {
     const { deploy, log, get } = deployments
     const { deployer } = await getNamedAccounts()
     const chainName = network.name
     const chainId = network.config.chainId
-    const VRF_SUB_FUND_AMOUNT = 30 //30 is overkill, 2 will do
 
     let vrfCoordinatorV2address, VRFCoordinatorV2Mock
     let subscriptionId
@@ -29,6 +30,11 @@ module.exports = async ({ deployments, getNamedAccounts }) => {
         subscriptionId = networkConfig[chainId]["subscriptionId"]
     }
 
+    const waitBlockConfirmations = developmentChains.includes(network.name)
+        ? 1
+        : network.config.blockConfimations
+
+    log("----------------------------------------------------")
     const entraneFee = networkConfig[chainId]["entranceFee"]
     const gasLane = networkConfig[chainId]["gasLane"]
     const callbackGaslimit = networkConfig[chainId]["callbackGaslimit"]
@@ -53,7 +59,7 @@ module.exports = async ({ deployments, getNamedAccounts }) => {
         from: deployer,
         args: args,
         log: true,
-        waitConfirmations: network.config.blockConfimations || 1,
+        waitConfirmations: waitBlockConfirmations,
     })
 
     // we have to add the Raffle contract's address to VRFCoordinatorV2Mock's consumers
