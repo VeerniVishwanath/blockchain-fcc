@@ -15,10 +15,12 @@ export default function ManualHeader() {
     const [isConnected, setConnected] = useState(true)
 
     useEffect(() => {
-        if (isWeb3Enabled) return
-        console.log(`Not Connected`)
-        if (typeof window != "undefined") {
+        if (
+            !isWeb3Enabled &&
+            typeof window != "undefined" &&
             window.localStorage.getItem("connected")
+        ) {
+            console.log(`Not Connected`)
             enableWeb3()
         }
         console.log("Hie")
