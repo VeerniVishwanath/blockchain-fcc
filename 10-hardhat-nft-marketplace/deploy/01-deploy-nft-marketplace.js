@@ -1,32 +1,31 @@
 const { VERIFICATION_BLOCK_CONFIRMATIONS, developmentChains } = require("../helper-hardhat-config")
 const { verify } = require("../utils/verify")
 
-module.exports = async ({ getNamedAccounts, deployments, network, ethers }) => {
+module.exports = async ({ getNamedAccounts, deployments, network }) => {
     const { deployer } = await getNamedAccounts()
-    const { log, deploy } = deployments
+    const { deploy, log } = deployments
 
-    const waitBlockConfirmations = developmentChains.includes(network.name)
+    const blockConfirmations = developmentChains.includes(network.name)
         ? 1
         : VERIFICATION_BLOCK_CONFIRMATIONS
 
-    log(`----------------------------------------------------`)
+    log("---------------------------------------------------")
 
     const args = []
 
-    const nftMarketplace =await deploy("NftMarketplace", {
+    const nftMarketplace = await deploy("NftMarketplace", {
         from: deployer,
         args: args,
         log: true,
-        waitConfirmations: waitBlockConfirmations,
+        waitConfirmations: blockConfirmations,
     })
 
     //Verifying the deployment
     if (!developmentChains.includes(network.name) && process.env.ETHERSCAN_API_KEY) {
-        log(`Verifying`)
         await verify(nftMarketplace.address, args)
     }
 
-    log(`----------------------------------------------------`)
+    log("---------------------------------------------------")
 }
 
 module.exports.tags = ["all", "nftmarketplace"]
