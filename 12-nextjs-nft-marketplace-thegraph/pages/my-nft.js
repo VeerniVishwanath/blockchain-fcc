@@ -5,7 +5,7 @@ import { useEffect, useState } from "react"
 import { ethers } from "ethers"
 import { Button, useNotification } from "web3uikit"
 import { GET_BOUGHT_ITEMS } from "../constants/subgraphQueries"
-import NFTBox2 from "../components/NFTBox"
+import NFTBox from "../components/NFTBox"
 import { useQuery } from "@apollo/client"
 
 export default function myNft() {
@@ -107,7 +107,7 @@ export default function myNft() {
                                 const { id, buyer, nftAddress, tokenId, price } = nft
 
                                 return (
-                                    <NFTBox2
+                                    <NFTBox
                                         nftAddress={nftAddress}
                                         buyer={buyer}
                                         tokenId={tokenId}

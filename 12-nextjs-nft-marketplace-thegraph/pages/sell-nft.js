@@ -89,7 +89,7 @@ export default function Home() {
     }
     return (
         <div className="flex h-screen ">
-            <div class="m-auto mt-20">
+            <div className="m-auto mt-20">
                 <Form
                     data={[
                         {

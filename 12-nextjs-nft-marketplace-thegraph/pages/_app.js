@@ -8,7 +8,7 @@ import { useEffect } from "react"
 
 const client = new ApolloClient({
     cache: new InMemoryCache(),
-    uri: "https://api.studio.thegraph.com/query/41264/nft-marketplace/0.0.3",
+    uri: process.env.NEXT_PUBLIC_SUBGRAPH_URL,
 })
 
 export default function MyApp({ Component, pageProps }) {
