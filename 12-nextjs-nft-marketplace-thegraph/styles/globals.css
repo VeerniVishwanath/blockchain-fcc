@@ -1,0 +1,12 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+html {
+    background-color: #d6e4e5;
+}
+Form {
+    width: 1000px;
+}
+Tooltip.before {
+    transform: translateX(-50%);
+}
