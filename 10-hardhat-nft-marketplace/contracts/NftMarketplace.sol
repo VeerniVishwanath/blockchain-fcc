@@ -17,7 +17,6 @@ error NftMarketplace__NoProceeds();
 error NftMarketplace__TransferFailed();
 
 contract NftMarketplace is ReentrancyGuard {
-
     //Custom Datatypes
     struct Listing {
         uint256 price;
@@ -31,7 +30,7 @@ contract NftMarketplace is ReentrancyGuard {
         uint256 indexed tokenId,
         uint256 price
     );
-    event ItemBrought(
+    event ItemBought(
         address indexed buyer,
         address indexed nftAddress,
         uint256 indexed tokenId,
@@ -135,7 +134,7 @@ contract NftMarketplace is ReentrancyGuard {
         delete (s_listings[nftAddress][tokenId]);
         IERC721(nftAddress).safeTransferFrom(listedItem.seller, msg.sender, tokenId);
         //check to make sure the NFT was transfered
-        emit ItemBrought(msg.sender, nftAddress, tokenId, listedItem.price);
+        emit ItemBought(msg.sender, nftAddress, tokenId, listedItem.price);
     }
 
     /**Cancel Item */

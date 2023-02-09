@@ -6,20 +6,21 @@ const {
 } = require("../helper-hardhat-config")
 const { ethers } = require("hardhat")
 require("dotenv").config()
+const fs = require("fs")
 
-const frontEndContractsFile = (module.exports = async () => {
+module.exports = async () => {
     if (process.env.UPDATE_FRONT_END) {
         console.log("Writing to front end...")
         await updateContractAddressess()
         await updateAbi()
         console.log("Front end Written!")
     }
-})
+}
 
 async function updateContractAddressess() {
     const chainId = network.config.chainId.toString()
     const nftMarketplace = await ethers.getContract("NftMarketplace")
-    const contractAddresses = JSON.parse(fs.readFilesync(frontEndContractsFile, "utf8"))
+    const contractAddresses = JSON.parse(fs.readFileSync(frontEndContractsFile, "utf8"))
     if (chainId in contractAddresses) {
         if (!contractAddresses[chainId]["NftMarketplace"].includes(nftMarketplace.address)) {
             contractAddresses[chainId]["NftMarketplace"].push(nftMarketplace.address)
@@ -48,7 +49,7 @@ async function updateAbi() {
         basicNft.interface.format(ethers.utils.FormatTypes.json)
     )
     fs.writeFileSync(
-        `${frontendAbiLocation2}basicNft.json`,
+        `${frontEndAbiLocation2}BasicNft.json`,
         basicNft.interface.format(ethers.utils.FormatTypes.json)
     )
 }
