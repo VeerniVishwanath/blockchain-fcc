@@ -2,7 +2,7 @@
 
 This repo is for the NftMarketplace frontend
 
--   Related repos
+####   Related repos
 -   [Backend](https://github.com/VeerniVishwanath/blockchain-fcc/blob/main/10-hardhat-nft-marketplace)
 -   [TheGraph](https://github.com/VeerniVishwanath/blockchain-fcc/tree/main/13-graph-nft-marketplace)
 
