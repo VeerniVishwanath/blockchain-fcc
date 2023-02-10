@@ -1,13 +1,19 @@
 # Hardhat NFT Marketplace
 
+This repo is for the NftMarketplace Backend(Smart Contracts)
+
+- Related repos
+ - [Frontend](https://github.com/VeerniVishwanath/blockchain-fcc/blob/main/12-nextjs-nft-marketplace-thegraph)
+ - [TheGraph](https://github.com/VeerniVishwanath/blockchain-fcc/tree/main/13-graph-nft-marketplace)
+
+Project is Live on [Vercel](https://nft-marketplace-gamma-six.vercel.app/)
+ 
 <br/>
 <p align="center">
 <img src="./img/hero.png" width="500" alt="Hardhat NextJS Marketplace">
 </a>
 </p>
 <br/>
-
-This is a repo showing how to make an NFT Marketplace from scratch!
 
 [Full Repo](https://github.com/VeerniVishwanath/blockchain-fcc)
 
